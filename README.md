@@ -11,7 +11,7 @@ Contents:
     - [Windows](#windows)
     - [Linux](#linux)
     - [Build from Source](#build-from-source)
-- [Rules](#rules)
+- [Usage](#usage)
 - [Bugs/Issues](#bugs--issues)
 - [Contributing](#contributing)
 - [Distributing](#distributing)
@@ -114,7 +114,7 @@ pnpm inject
 ```
 to install the project to Discord (inject must be ran as sudo if you are on linux)
 
-## Rules
+## Usage
 
 This program has 5 pre-defined ways of using it, and a way of defining custom modes:
 
@@ -158,6 +158,12 @@ This mode has 2 features
 
 ### Rules mode
 This enables users to add custom rules which use a system called "Regex".
+
+### The ladel bot
+
+> The name comes from the fact that its creator (me) is occasionally referred to as being "soup-brained"
+
+See the wiki for a full list of commands
 
 ## Bugs / Issues
 
