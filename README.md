@@ -116,9 +116,56 @@ to install the project to Discord (inject must be ran as sudo if you are on linu
 
 ## Rules
 
+This program has 5 pre-defined ways of using it, and a way of defining custom modes:
+
+> Different modes can be used at the same time with a predefined priority order
+
+> Modes can be set on a timer, to end after a specific amount of time has passed.
+
+### Gag Mode
+This mode simulates the user having a gag in their mouth. Replacing text with something mostly illegible
+
+### Pet Mode
+This mode allows a random chance for words to be replaced with pet modes
+
+We currently have 7 different pets, each with multiple noises:
+
+- Puppy
+- Kitty
+- Cow
+- Fox
+- Bird
+- Bee
+- Bunny
+
+You can then set a percentage chance that each word will be replaced with a pet word
+
+### Bimbo mode
+This mode has 3 features:
+
+1. Every now and then, a random "like" will be inserted between words
+2. Every pronoun (1st or 3rd person) will be followed with the phrase "like totally"
+3. A maximum word length can be set. If this word count is gone over, the rest of the message will be replaced with "uhh long words harddd hehe"
+
+### Horny mode
+Gives a horny percentage, higher percentage means higher chance that random "horny word" with be inserted between your normal words
+
+### Drone mode
+This mode has 2 features
+
+1. Adds a header and footer to each message, these are by default "This Drone Says:" and "It Obeys.". They can be changed to whatever you like
+2. Adds a "damage" modifier in which the drone can be damaged causing it to glitch with random "beep" and "bzzt" noises, as well as beginning to slur words, if the drones health becomes lower than 10 (starts at 100) it will "bluescreen".
+
+### Rules mode
+This enables users to add custom rules which use a system called "Regex".
+
 ## Bugs / Issues
 
+If you experience any bugs or issues, please check the [Issues](https://github.com/Key-Intercept/key-intercept/issues?q=is%3Aissue%20state%3Aopen%20label%3Abug) page. If you can see your issue there then it is something that is actively being fixed, otherwise, create an issue describing your problem.
+
 ## Contributing
+
+(I'll fill this in later)
 
 ## Distributing
 
