@@ -1,0 +1,39 @@
+name: Release Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get Version
+        id: get_version
+        run: |
+          VERSION=$(grep "export const version_number" key-intercept/index.ts | cut -d'"' -f2)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Create Linux Zip
+        run: zip -r key-intercept-linux.zip key-intercept key-intercept-install.sh
+
+      - name: Create Windows Zip
+        run: zip -r key-intercept-windows.zip key-intercept key-intercept-install.ps1 key-intercept-CLICK-ME.bat
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "v${{ env.VERSION }}.${{ github.run_number }}"
+          name: "Release v${{ env.VERSION }}.${{ github.run_number }}"
+          files: |
+            key-intercept-linux.zip
+            key-intercept-windows.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

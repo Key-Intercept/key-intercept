@@ -7,6 +7,8 @@
 import { createClient } from "@supabase/supabase-js";
 import definePlugin from "@utils/types";
 
+export const version_number = "4.0";
+
 import { Config, Rule } from "./types";
 
 const supabase = createClient("https://qjzgfwithyvmwctesnqs.supabase.co", "sb_publishable_cxq8QZp9BDtjE4G5qiPCFA_lUZ4Cbdh");
