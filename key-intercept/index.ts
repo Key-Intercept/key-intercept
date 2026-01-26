@@ -167,7 +167,7 @@ export function shouldApplyDrone(drone_end: Date, verbose: boolean = true): bool
 }
 
 export function applyRules(msg: string, rules: Rule[], rules_end: Date, verbose: boolean = true): string {
-    if (!shouldApplyRules(rules_end)) {
+    if (!shouldApplyRules(rules_end, verbose)) {
         return msg;
     }
     let output = msg;
@@ -200,18 +200,18 @@ export function applyGag(msg: string, gag_end: Date, verbose: boolean = true): s
     const remainChars = ["a", "e", "i", "o", "u", " ", "g", "h", "A", "E", "I", "O", "U", "G", "H", "?", "!", ".", ",", ":", ";", "#", "*", "-", "(", ")", "~"];
     for (const char of msg) {
         if (char === ":" && !inEmote) {
-            console.log("Starting emote");
+           if (verbose) {console.log("Starting emote")};
             inEmote = true;
             output += char;
             continue;
         } else if (char === ":" && inEmote) {
-            console.log("Ending emote");
+            if (verbose) {console.log("Ending emote")};
             inEmote = false;
             output += char;
             continue;
         }
         if (inEmote) {
-            console.log("Inside emote");
+            if (verbose) {console.log("Inside emote")};
             output += char;
             continue;
         }
@@ -257,7 +257,7 @@ export function applyBimbo(msg: string, bimbo_end: Date, bimbo_word_length: numb
         return msg;
     }
     let output = "";
-    const pronouns = ["i", "is", "you", "he", "she", "we", "they"];
+    const pronouns = ["i", "is", "you", "he", "she", "it", "we", "they"];
     const maxWordLength = bimbo_word_length;
     const likeChance = 0.1;
     const gargle_words = ["like", "hehe", "uhh", "totally", "so dumbb"];
@@ -282,7 +282,7 @@ export function applyBimbo(msg: string, bimbo_end: Date, bimbo_word_length: numb
         if (Math.random() < likeChance) {
             output += gargle_words[Math.floor(Math.random() * (gargle_words.length - 1))];
             output += " ";
-            console.log("added gargle word " + output.split(" ").reverse()[0]);
+            if (verbose) {console.log("added gargle word " + output.split(" ").reverse()[0])};
         }
     }
     if (verbose) { console.log("message after bimbo: " + output); }
