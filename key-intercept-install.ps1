@@ -28,8 +28,14 @@ if (-not (Test-Path $VENCOORD_DIR -PathType Container)) {
 
     # Check for git
     if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
-        Write-Host "Error: 'git' is not installed. Please install git and try again." -ForegroundColor Red
-        exit 1
+        Write-Host "Git not found. Installing Git via Winget..."
+        winget install --id Git.Git -e --source winget
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host "Error: Failed to install Git via Winget. Please install git manually." -ForegroundColor Red
+            exit 1
+        }
+        # Refresh environment variables so git is available in the current session
+        $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
     }
 
     git clone "https://github.com/Vendicated/Vencord.git" $VENCOORD_DIR
@@ -94,8 +100,14 @@ if (-not (Get-Command pnpm -ErrorAction SilentlyContinue)) {
 
     # Check for npm
     if (-not (Get-Command npm -ErrorAction SilentlyContinue)) {
-        Write-Host "Error: 'npm' is not installed. Please install Node.js (which includes npm) or install pnpm manually. Exiting." -ForegroundColor Red
-        exit 1
+        Write-Host "npm not found. Installing Node.js via Winget..."
+        winget install OpenJS.NodeJS.LTS
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host "Error: Failed to install Node.js via Winget. Please install Node.js manually." -ForegroundColor Red
+            exit 1
+        }
+        # Refresh environment variables so npm is available in the current session
+        $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
     }
 
     # Install pnpm using npm

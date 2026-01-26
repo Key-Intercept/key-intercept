@@ -95,8 +95,8 @@ if [ -f "$CSP_FILE" ]; then
     echo "Modifying CSP file: $CSP_FILE to add Supabase rules..."
 
     # CSP lines to be inserted (Note the trailing comma is crucial for the JSON-like structure)
-    LINE1='"https://*.supabase.co": [ConnectSrc, "media-src"],'
-    LINE2='"wss://*.supabase.co": [ConnectSrc],'
+    LINE1='"https://*.supabase.co": ConnectSrc,'
+    LINE2='"wss://*.supabase.co": ConnectSrc,'
 
     # Inserting in reverse line number order to maintain original line numbering reference
     # Insert line 65 (original)
