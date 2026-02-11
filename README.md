@@ -5,16 +5,31 @@ Welcome to key-intercept, a plugin for discord which helps you talk ~~un~~proper
 
 Basically, this is a lil program that sits in the back of your discord. When you send a message it will edit it in some way dependent upon a list of [rules](#rules)
 
+> Note: Vencord is an unsupported use of Discord, to use it is a breach of TOS. Use it, and this plugin, at your own risk.
+
 Contents:
 
-- [Install](#install)
+- [Key-Intercept](#key-intercept)
+  - [Install](#install)
     - [Windows](#windows)
     - [Linux](#linux)
-    - [Build from Source](#build-from-source)
-- [Usage](#usage)
-- [Bugs/Issues](#bugs--issues)
-- [Contributing](#contributing)
-- [Distributing](#distributing)
+    - [Build from source](#build-from-source)
+      - [Install dependencies](#install-dependencies)
+      - [Setup](#setup)
+      - [Configuring Vencord](#configuring-vencord)
+      - [Discord Injection](#discord-injection)
+  - [First time setup](#first-time-setup)
+  - [Usage](#usage)
+    - [Gag Mode](#gag-mode)
+    - [Pet Mode](#pet-mode)
+    - [Bimbo mode](#bimbo-mode)
+    - [Horny mode](#horny-mode)
+    - [Drone mode](#drone-mode)
+    - [Rules mode](#rules-mode)
+    - [The ladel bot](#the-ladel-bot)
+  - [Bugs / Issues](#bugs--issues)
+  - [Contributing](#contributing)
+  - [Distributing](#distributing)
 
 
 ## Install
@@ -114,6 +129,10 @@ pnpm inject
 ```
 to install the project to Discord (inject must be ran as sudo if you are on linux)
 
+## First time setup
+
+When first installing this, you will most likely want to enable others to control it and edit it. To do this, add [the-ladel](https://discord.com/oauth2/authorize?client_id=1424790082690220052) bot to your account, then run the [/submit](https://github.com/Key-Intercept/key-intercept/wiki/The-Ladel#submit) command to give access.
+
 ## Usage
 
 This program has 5 pre-defined ways of using it, and a way of defining custom modes:
@@ -121,6 +140,8 @@ This program has 5 pre-defined ways of using it, and a way of defining custom mo
 > Different modes can be used at the same time with a predefined priority order
 
 > Modes can be set on a timer, to end after a specific amount of time has passed.
+
+> More info can be found in [the wiki](https://github.com/Key-Intercept/key-intercept/wiki/Modes)
 
 ### Gag Mode
 This mode simulates the user having a gag in their mouth. Replacing text with something mostly illegible
@@ -163,7 +184,7 @@ This enables users to add custom rules which use a system called "Regex".
 
 > The name comes from the fact that its creator (me) is occasionally referred to as being "soup-brained"
 
-See the wiki for a full list of commands
+See the [wiki](https://github.com/Key-Intercept/key-intercept/wiki/The-Ladel) for a full list of commands
 
 ## Bugs / Issues
 
@@ -171,10 +192,12 @@ If you experience any bugs or issues, please check the [Issues](https://github.c
 
 ## Contributing
 
-(I'll fill this in later)
+Check [the wiki](https://github.com/Key-Intercept/key-intercept/wiki/Development#programming)
 
 ## Distributing
 
 You can share this plugin in other servers, my recommendation is to just link this page to them.
 
 I do have plans to add a system in which you can "preset" a config to auto install for users.
+
+If you do share this plugin, you are legally required to credit me as the author.
