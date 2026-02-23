@@ -20,6 +20,7 @@ export type Config = {
     drone_header_text: string,
     drone_footer_text: string,
     drone_health: number,
+    uwu_end: Date,
     debug: boolean;
 };
 

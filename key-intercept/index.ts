@@ -168,6 +168,11 @@ export function shouldApplyDrone(drone_end: Date, verbose: boolean = true): bool
     return Date.now() <= drone_end.getTime();
 }
 
+export function shouldApplyUWU(uwu_end: Date, verbose: boolean = true): boolean {
+    if (verbose) { console.log(Date.now() <= uwu_end.getTime() ? "Should apply uwu" : "Should not apply uwu"); }
+    return Date.now() <= uwu_end.getTime();
+}
+
 export function applyRules(msg: string, rules: Rule[], rules_end: Date, verbose: boolean = true): string {
     if (!shouldApplyRules(rules_end, verbose)) {
         return msg;
@@ -394,6 +399,27 @@ export function applyDrone(msg: string, drone_end: Date, header_text: string, fo
     return output;
 }
 
+export function applyUWU(msg: string, uwu_end: Date, verbose: boolean = true) {
+    if (!shouldApplyUWU(uwu_end, verbose)) {
+        return msg;
+    }
+    let output = "";
+
+    for (let word of msg.split(" ")) {
+        if (word_is_link(word, verbose)) {
+            output += word + " ";
+            continue;
+        }
+        word = word.replace(new RegExp("th", "gi"), "d");
+        word = word.replace(new RegExp("r", "gi"), "w");
+        word = word.replace(new RegExp("u", "gi"), "uw");
+
+        output += word + " "
+    }
+
+    return output;
+}
+
 function word_is_link(word: string, verbose: boolean = true): boolean {
     if (verbose) {
         console.log("testing if is link:");
@@ -409,6 +435,7 @@ export function applyReplacements(msg: string) {
     const originalMsg = msg;
     console.log("Original message: " + originalMsg);
     msg = applyRules(msg, rules, config.rules_end);
+    msg = applyUWU(msg, config.uwu_end);
     msg = applyHorny(msg, config.horny_end);
     msg = applyPet(msg, config.pet_end, config.pet_amount, petWords);
     msg = applyBimbo(msg, config.bimbo_end, config.bimbo_word_length);
