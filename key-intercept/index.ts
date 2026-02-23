@@ -199,33 +199,41 @@ export function applyGag(msg: string, gag_end: Date, verbose: boolean = true): s
     }
     let output = "";
     let inEmote = false;
-    const remainChars = ["a", "e", "i", "o", "u", " ", "g", "h", "A", "E", "I", "O", "U", "G", "H", "?", "!", ".", ",", ":", ";", "#", "*", "-", "(", ")", "~"];
-    for (const char of msg) {
-        if (char === ":" && !inEmote) {
-           if (verbose) {console.log("Starting emote")};
-            inEmote = true;
-            output += char;
-            continue;
-        } else if (char === ":" && inEmote) {
-            if (verbose) {console.log("Ending emote")};
-            inEmote = false;
-            output += char;
+    const remainChars = ["a", "e", "i", "o", "u", "g", "h", "A", "E", "I", "O", "U", "G", "H", "?", "!", ".", ",", ":", ";", "#", "*", "-", "(", ")", "~"];
+    for (const word of msg) {
+        let outword = "";
+        if (word_is_link(word, verbose)) {
+            outword = word;
             continue;
         }
-        if (inEmote) {
-            if (verbose) {console.log("Inside emote")};
-            output += char;
-            continue;
-        }
-        if (remainChars.includes(char)) {
-            output += char;
-        } else {
-            if (!(char.charCodeAt(0) >= 97 && char.charCodeAt(0) <= 122)) {
-                output += ["G", "H"][Math.floor(Math.random() * 2)];
+        for (const char of word) {
+            if (char === ":" && !inEmote) {
+                if (verbose) { console.log("Starting emote") };
+                inEmote = true;
+                outword += char;
+                continue;
+            } else if (char === ":" && inEmote) {
+                if (verbose) { console.log("Ending emote") };
+                inEmote = false;
+                outword += char;
+                continue;
+            }
+            if (inEmote) {
+                if (verbose) { console.log("Inside emote") };
+                outword += char;
+                continue;
+            }
+            if (remainChars.includes(char)) {
+                outword += char;
             } else {
-                output += ["g", "h"][Math.floor(Math.random() * 2)];
+                if (!(char.charCodeAt(0) >= 97 && char.charCodeAt(0) <= 122)) {
+                    outword += ["G", "H"][Math.floor(Math.random() * 2)];
+                } else {
+                    outword += ["g", "h"][Math.floor(Math.random() * 2)];
+                }
             }
         }
+        output += outword;
     }
     if (verbose) { console.log("message after gag: " + output); }
     return output;
@@ -237,9 +245,13 @@ export function applyPet(msg: string, pet_end: Date, pet_amount: number, pet_wor
     }
     let output = "";
     for (const word of msg.split(" ")) {
+        if (word_is_link(word, verbose)) {
+            output += word + " ";
+            continue
+        }
         if (word[0] === ":" && word[word.length] === ":") {
             output += word + " ";
-            console.log("Skipping emote word");
+            if (verbose) { console.log("Skipping emote word") };
             continue;
         }
         if (Math.random() < pet_amount) {
@@ -265,26 +277,28 @@ export function applyBimbo(msg: string, bimbo_end: Date, bimbo_word_length: numb
     const gargle_words = ["like", "hehe", "uhh", "totally", "so dumbb"];
     for (const word of msg.split(" ")) {
         let changed = false;
-        if (pronouns.includes(word.toLowerCase())) {
-            output += word;
-            output += " like totally ";
-            changed = true;
-            if (verbose) { console.log("pronoun found, added 'like totally'"); }
-        }
-        if (word.length > maxWordLength) {
-            if (verbose) { console.log("word: " + word + " was too long"); }
-            output += word.substring(0, maxWordLength - 2);
-            output += "uhhhh long words harddd hehe";
-            return output;
+        if (!word_is_link(word, verbose)) {
+            if (pronouns.includes(word.toLowerCase())) {
+                output += word;
+                output += " like totally ";
+                changed = true;
+                if (verbose) { console.log("pronoun found, added 'like totally'"); }
+            }
+            if (word.length > maxWordLength) {
+                if (verbose) { console.log("word: " + word + " was too long"); }
+                output += word.substring(0, maxWordLength - 2);
+                output += "uhhhh long words harddd hehe";
+                return output;
+            }
         }
         if (!changed) {
             output += word;
             output += " ";
         }
-        if (Math.random() < likeChance) {
+        if (Math.random() < likeChance && !word_is_link(word, verbose)) {
             output += gargle_words[Math.floor(Math.random() * (gargle_words.length - 1))];
             output += " ";
-            if (verbose) {console.log("added gargle word " + output.split(" ").reverse()[0])};
+            if (verbose) { console.log("added gargle word " + output.split(" ").reverse()[0]) };
         }
     }
     if (verbose) { console.log("message after bimbo: " + output); }
@@ -297,10 +311,12 @@ export function applyHorny(msg: string, horny_end: Date, verbose: boolean = true
     }
     let output = "";
     for (const word of msg.split(" ")) {
-        if (Math.random() < 0.75) {
-            if (verbose) { console.log("Adding horny word"); }
-            output += horny_words[Math.floor(Math.random() * (horny_words.length - 1))];
-            output += " ";
+        if (!word_is_link(word, verbose)) {
+            if (Math.random() < 0.75) {
+                if (verbose) { console.log("Adding horny word"); }
+                output += horny_words[Math.floor(Math.random() * (horny_words.length - 1))];
+                output += " ";
+            }
         }
         output += word + " ";
     }
@@ -316,13 +332,22 @@ export function applyDrone(msg: string, drone_end: Date, header_text: string, fo
         return "`This Drone haaaaas receieved bzzzzt, ppplease provide repaiirs using beep '/repair', tthank youu. Returned Error: 0x7547372482`";
     }
 
+    let containsLink = false;
+    for (const word of msg) {
+        if (word_is_link(word, verbose)) {
+            containsLink = true;
+        }
+    }
+
     let output = "";
-    msg = msg.replace(new RegExp("\\bMe\\b", "gi"), "This Drone");
-    msg = msg.replace(new RegExp("\\bMy\\b", "gi"), "Its'");
-    msg = msg.replace(new RegExp("\\bI am\\b", "gi"), "It is");
-    msg = msg.replace(new RegExp("\\bI(')?m\\b", "gi"), "It is");
-    msg = msg.replace(new RegExp("\\bI\\b", "gi"), "This Drone");
-    if (verbose) { console.log("Drone Regex Applied"); }
+    if (!containsLink) {
+        msg = msg.replace(new RegExp("\\bMe\\b", "gi"), "This Drone");
+        msg = msg.replace(new RegExp("\\bMy\\b", "gi"), "Its'");
+        msg = msg.replace(new RegExp("\\bI am\\b", "gi"), "It is");
+        msg = msg.replace(new RegExp("\\bI(')?m\\b", "gi"), "It is");
+        msg = msg.replace(new RegExp("\\bI\\b", "gi"), "This Drone");
+        if (verbose) { console.log("Drone Regex Applied"); }
+    }
 
     let ignoreFirstOne = false;
 
@@ -331,9 +356,11 @@ export function applyDrone(msg: string, drone_end: Date, header_text: string, fo
             ignoreFirstOne = false;
             continue;
         }
-        if (Math.random() > (drone_health / 100)) {
-            if (verbose) { console.log("Adding random beep"); }
-            output += Math.random() > 0.5 ? "`beep` " : "`bzzzt` ";
+        if (!word_is_link(word, verbose)) {
+            if (Math.random() > (drone_health / 100)) {
+                if (verbose) { console.log("Adding random beep"); }
+                output += Math.random() > 0.5 ? "`beep` " : "`bzzzt` ";
+            }
         }
         output += word + " ";
     }
@@ -343,20 +370,32 @@ export function applyDrone(msg: string, drone_end: Date, header_text: string, fo
 
     let lastTriggered = 0;
 
-    for (const char of tempOutput) {
-        output += char;
-        lastTriggered += 1;
-        if (Math.random() + (lastTriggered / 100) - 1 > (drone_health / 100) && char !== "`") {
-            lastTriggered = 0;
-            for (let i = 0; i < Math.floor(Math.random() * 10); i++) {
-                if (verbose) { console.log("Adding random static"); }
-                output += char;
+    for (const word of tempOutput) {
+        let outword = "";
+        if (!word_is_link(word, verbose)) {
+            for (const char of word) {
+                outword += char;
+                lastTriggered += 1;
+                if (Math.random() + (lastTriggered / 100) - 1 > (drone_health / 100) && char !== "`") {
+                    lastTriggered = 0;
+                    for (let i = 0; i < Math.floor(Math.random() * 10); i++) {
+                        if (verbose) { console.log("Adding random static"); }
+                        outword += char;
+                    }
+                }
             }
+        } else {
+            outword = word;
         }
+        output += outword;
     }
 
     output = "`" + header_text + "`\n" + output.trimEnd() + "\n`" + footer_text + "`";
     return output;
+}
+
+function word_is_link(word: string, verbose: boolean = true): boolean {
+    return (word.at(0) == 'h' && word.at(1) == 't' && word.at(2) == 't' && word.at(3) == 'p')
 }
 
 export function applyReplacements(msg: string) {
