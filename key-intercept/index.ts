@@ -233,7 +233,7 @@ export function applyGag(msg: string, gag_end: Date, verbose: boolean = true): s
                 }
             }
         }
-        output += outword + " ";
+        output += outword;
     }
     if (verbose) { console.log("message after gag: " + output); }
     return output;
