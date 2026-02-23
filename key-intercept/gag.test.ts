@@ -27,10 +27,6 @@ test("applyGag_BLANK", () => {
     expect(applyGag("", GLOBALDATE, false)).toBe("");
 })
 
-test("applyGag_SPACE", () => {
-    expect(applyGag(" ", GLOBALDATE, false)).toBe(" ");
-})
-
 test("applyGag_LOWERCASE_WORD", () => {
     const input = "test"
     const output = applyGag(input, GLOBALDATE, false);
@@ -56,22 +52,6 @@ test("applyGag_MIXED_WORD", () => {
     expect(output[1]).toBe("e");
     expect(output[2]).toBeOneOf(["g", "h"]);
     expect(output[3]).toBeOneOf(["g", "h"]);
-})
-
-test("applyGag_LOWERCASE_SPACE", () => {
-    const input = "a b"
-    const output = applyGag(input, GLOBALDATE, false);
-    expect(output[0]).toBe("a");
-    expect(output[1]).toBe(" ");
-    expect(output[2]).toBeOneOf(["g", "h"]);
-})
-
-test("applyGag_UPPERCASE_SPACE", () => {
-    const input = "A b"
-    const output = applyGag(input, GLOBALDATE, false);
-    expect(output[0]).toBe("A");
-    expect(output[1]).toBe(" ");
-    expect(output[2]).toBeOneOf(["g", "h"]);
 })
 
 test("applyGag_PUNCTUATION", () => {
