@@ -200,10 +200,10 @@ export function applyGag(msg: string, gag_end: Date, verbose: boolean = true): s
     let output = "";
     let inEmote = false;
     const remainChars = ["a", "e", "i", "o", "u", "g", "h", "A", "E", "I", "O", "U", "G", "H", "?", "!", ".", ",", ":", ";", "#", "*", "-", "(", ")", "~"];
-    for (const word of msg) {
+    for (const word of msg.split(" ")) {
         let outword = "";
         if (word_is_link(word, verbose)) {
-            outword = word;
+            outword = word + " ";
             continue;
         }
         for (const char of word) {
@@ -333,7 +333,7 @@ export function applyDrone(msg: string, drone_end: Date, header_text: string, fo
     }
 
     let containsLink = false;
-    for (const word of msg) {
+    for (const word of msg.split(" ")) {
         if (word_is_link(word, verbose)) {
             containsLink = true;
         }
@@ -370,7 +370,7 @@ export function applyDrone(msg: string, drone_end: Date, header_text: string, fo
 
     let lastTriggered = 0;
 
-    for (const word of tempOutput) {
+    for (const word of tempOutput.split(" ")) {
         let outword = "";
         if (!word_is_link(word, verbose)) {
             for (const char of word) {
@@ -387,7 +387,7 @@ export function applyDrone(msg: string, drone_end: Date, header_text: string, fo
         } else {
             outword = word;
         }
-        output += outword;
+        output += outword + " ";
     }
 
     output = "`" + header_text + "`\n" + output.trimEnd() + "\n`" + footer_text + "`";
@@ -395,7 +395,14 @@ export function applyDrone(msg: string, drone_end: Date, header_text: string, fo
 }
 
 function word_is_link(word: string, verbose: boolean = true): boolean {
-    return (word.at(0) == 'h' && word.at(1) == 't' && word.at(2) == 't' && word.at(3) == 'p')
+    if (verbose) {
+        console.log("testing if is link:");
+        console.log(word.at(0));
+        console.log(word.at(1));
+        console.log(word.at(2));
+        console.log(word.at(3));
+    }
+    return (word.at(0) == "h" && word.at(1) == "t" && word.at(2) == "t" && word.at(3) == "p")
 }
 
 export function applyReplacements(msg: string) {
