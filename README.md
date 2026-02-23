@@ -25,6 +25,7 @@ Contents:
     - [Bimbo mode](#bimbo-mode)
     - [Horny mode](#horny-mode)
     - [Drone mode](#drone-mode)
+    - [UWU mode](#uwu-mode)
     - [Rules mode](#rules-mode)
     - [The ladel bot](#the-ladel-bot)
   - [Bugs / Issues](#bugs--issues)
@@ -176,6 +177,9 @@ This mode has 2 features
 
 1. Adds a header and footer to each message, these are by default "This Drone Says:" and "It Obeys.". They can be changed to whatever you like
 2. Adds a "damage" modifier in which the drone can be damaged causing it to glitch with random "beep" and "bzzt" noises, as well as beginning to slur words, if the drones health becomes lower than 10 (starts at 100) it will "bluescreen".
+
+### UWU mode
+Makes the user talk through uwu
 
 ### Rules mode
 This enables users to add custom rules which use a system called "Regex".
