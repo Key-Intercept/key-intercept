@@ -108,6 +108,7 @@ export async function getConfig() {
     config.drone_header_text = configData.data!.drone_header_text;
     config.drone_footer_text = configData.data!.drone_footer_text;
     config.drone_health = configData.data!.drone_health;
+    config.uwu_end = new Date(configData.data!.uwu_end);
     console.log("Config:");
     console.log(config);
 }
