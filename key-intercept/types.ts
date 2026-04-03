@@ -31,6 +31,7 @@ export type Rule = {
     config_id: bigint,
     rule_regex: RegExp,
     rule_replacement: string,
+    regex_normalize: boolean,
     enabled: boolean,
     chance_to_apply: number,
 };
