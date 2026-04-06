@@ -20,7 +20,7 @@ export class NormalizedString {
      * @param fn Callback for each match - returns a string that is the value to replace with
      */
     replace(regex: RegExp, fn: (match: string, ...args: any) => string) {
-        const regexWithIndices = new RegExp(regex, 'd');
+        const regexWithIndices = new RegExp(regex, 'gid');
         let match;
         while ((match = regexWithIndices.exec(this.nfkdStr)) != null) {
             const indices = match.indices!;
