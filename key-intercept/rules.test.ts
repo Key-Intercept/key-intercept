@@ -22,7 +22,7 @@ test("shouldApplyRules_TRUE_NOW", () => {
     expect(shouldApplyRules(new Date(Date.now()), false)).toBeTruthy();
 })
 
-const testRule = {rule_regex: RegExp("test"), rule_replacement: "exam", enabled: true, chance_to_apply: 100, id: BigInt(0), config_id: BigInt(0), created_at: new Date(0, 1), updated_at: new Date(0, 1) } as Rule;
+const testRule = {rule_regex: "test", rule_replacement: "exam", enabled: true, chance_to_apply: 100, id: BigInt(0), config_id: BigInt(0), created_at: new Date(0, 1), updated_at: new Date(0, 1) } as Rule;
 
 test("applyRules_BLANK", () => {
     expect(applyRules("", [testRule], new Date(9999, 1), false)).toBe("");
@@ -54,7 +54,7 @@ test("applyRules_DISABLED_RULE", () => {
 });
 
 test("applyRules_MULTIPLE_RULES", () => {
-const anotherRule = {rule_regex: RegExp("hello"), rule_replacement: "hi", enabled: true, chance_to_apply: 100, id: BigInt(0), config_id: BigInt(0), created_at: new Date(0, 1), updated_at: new Date(0, 1), order: 0, label: "" } as Rule;
+const anotherRule = {rule_regex: "hello", rule_replacement: "hi", enabled: true, chance_to_apply: 100, id: BigInt(0), config_id: BigInt(0), created_at: new Date(0, 1), updated_at: new Date(0, 1), order: 0, label: "" } as Rule;
     expect(applyRules("hello this is a test", [testRule, anotherRule], new Date(9999, 1), false)).toBe("hi this is a exam");
 });
 
