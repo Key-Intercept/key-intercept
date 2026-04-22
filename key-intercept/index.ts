@@ -450,7 +450,7 @@ export default definePlugin({
     name: "key-intercept",
     description: "You don't need to control what you say, let someone else control it.",
     authors: [{ name: "Tom", id: 277137325342064640n }],
-    dependencies: ["MessageEventsAPI"]
+    dependencies: ["MessageEventsAPI"],
     _handler: null as ((event: any) => void) | null,
 
     async start() {
