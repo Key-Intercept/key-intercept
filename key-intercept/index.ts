@@ -122,9 +122,7 @@ export async function getRules() {
 
 export async function getWhitelist() {
     const whitelistData = await supabase.from("Server_Whitelist_Items").select().eq("config_id", config.id);
-    whitelist = whitelistData.data!.map((v, i, a) => {
-        return [a[i].server_name, a[i].discord_id];
-    });
+    whitelist = whitelistData.data!
     console.log("Whitelist:");
     console.log(whitelist);
 }
@@ -468,12 +466,14 @@ export default definePlugin({
         if (config?.debug) console.log("Channel object:", channel);
 
         let nameToCheck: string | null = null;
+        let idToCheck: BigInt | null = null;
 
         if (channel.guild_id) {
             // It's a server channel
             const guild = GuildStore?.getGuild(channel.guild_id);
             if (config?.debug) console.log("Guild object:", guild);
             nameToCheck = guild?.name ?? null;
+            idToCheck = guild?.id ?? null;
         } else {
             // It's a DM or Group DM
             if (channel.name) {
@@ -487,16 +487,22 @@ export default definePlugin({
                     .map((id: string) => UserStore.getUser(id)?.username)
                     .filter(Boolean);
                 nameToCheck = recipientNames.join(", ");
+                idToCheck = channel.id ?? null;
             }
         }
 
         if (config?.debug) console.log(`Name to check against whitelist: "${nameToCheck}"`);
+        if (config?.debug) console.log(`ID to check against whitelist: "${idToCheck}"`);
 
         if (whitelist.length > 0) {
 
             // If a name exists, check against the whitelist.
             if (nameToCheck && !whitelist.includes(nameToCheck)) {
                 if (config?.debug) console.log(`"${nameToCheck}" is not in the whitelist, skipping modifications.`);
+                return;
+            }
+            if (idToCheck && !whitelist.some(item => item.discord_id === idToCheck)) {
+                if (config?.debug) console.log(`ID "${idToCheck}" is not in the whitelist, skipping modifications.`);
                 return;
             }
         }
