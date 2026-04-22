@@ -76,7 +76,7 @@ test("applyRules_ASCII_RULE_MATCHES_MATH_FRAKTUR_TEXT", () => {
 
 test("applyRules_ORDER_APPLIES_LOWEST_ORDER_FIRST", () => {
     const rule1 = {
-        rule_regex: RegExp("cat"),
+        rule_regex: "cat",
         rule_replacement: "dog",
         enabled: true,
         chance_to_apply: 100,
@@ -89,7 +89,7 @@ test("applyRules_ORDER_APPLIES_LOWEST_ORDER_FIRST", () => {
     } as Rule;
 
     const rule2 = {
-        rule_regex: RegExp("dog"),
+        rule_regex: "dog",
         rule_replacement: "wolf",
         enabled: true,
         chance_to_apply: 100,
@@ -106,7 +106,7 @@ test("applyRules_ORDER_APPLIES_LOWEST_ORDER_FIRST", () => {
 
 test("applyRules_ORDER_CHANGES_FINAL_OUTPUT", () => {
     const first = {
-        rule_regex: RegExp("ab"),
+        rule_regex: "ab",
         rule_replacement: "x",
         enabled: true,
         chance_to_apply: 100,
@@ -119,7 +119,7 @@ test("applyRules_ORDER_CHANGES_FINAL_OUTPUT", () => {
     } as Rule;
 
     const second = {
-        rule_regex: RegExp("x"),
+        rule_regex: "x",
         rule_replacement: "y",
         enabled: true,
         chance_to_apply: 100,
@@ -136,7 +136,7 @@ test("applyRules_ORDER_CHANGES_FINAL_OUTPUT", () => {
 
 test("applyRules_ORDER_TIE_USES_ARRAY_ORDER", () => {
     const sameOrderA = {
-        rule_regex: RegExp("a"),
+        rule_regex: "a",
         rule_replacement: "b",
         enabled: true,
         chance_to_apply: 100,
@@ -149,7 +149,7 @@ test("applyRules_ORDER_TIE_USES_ARRAY_ORDER", () => {
     } as Rule;
 
     const sameOrderB = {
-        rule_regex: RegExp("b"),
+        rule_regex: "b",
         rule_replacement: "c",
         enabled: true,
         chance_to_apply: 100,
