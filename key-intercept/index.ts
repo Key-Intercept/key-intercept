@@ -450,7 +450,7 @@ export default definePlugin({
     name: "key-intercept",
     description: "You don't need to control what you say, let someone else control it.",
     authors: [{ name: "Tom", id: 277137325342064640n }],
-
+    dependencies: ["MessageEventsAPI"]
     _handler: null as ((event: any) => void) | null,
 
     async start() {
@@ -497,7 +497,7 @@ export default definePlugin({
         if (whitelist.length > 0) {
 
             // If a name exists, check against the whitelist.
-            if (nameToCheck && !whitelist.includes(nameToCheck)) {
+            if (nameToCheck && !whitelist.some(item => item.server_name === nameToCheck)) {
                 if (config?.debug) console.log(`"${nameToCheck}" is not in the whitelist, skipping modifications.`);
                 return;
             }
