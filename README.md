@@ -6,31 +6,14 @@ Welcome to key-intercept, a plugin for discord which helps you talk ~~un~~proper
 Basically, this is a lil program that sits in the back of your discord. When you send a message it will edit it in some way dependent upon a list of [rules](#rules)
 
 > Note: Vencord is an unsupported use of Discord, to use it is a breach of TOS. Use it, and this plugin, at your own risk.
-<!-- 
 Contents:
 
-- [Key-Intercept](#key-intercept)
   - [Install](#install)
-    - [Windows](#windows)
-    - [Linux](#linux)
-    - [Build from source](#build-from-source)
-      - [Install dependencies](#install-dependencies)
-      - [Setup](#setup)
-      - [Configuring Vencord](#configuring-vencord)
-      - [Discord Injection](#discord-injection)
   - [First time setup](#first-time-setup)
   - [Usage](#usage)
-    - [Gag Mode](#gag-mode)
-    - [Pet Mode](#pet-mode)
-    - [Bimbo mode](#bimbo-mode)
-    - [Horny mode](#horny-mode)
-    - [Drone mode](#drone-mode)
-    - [UWU mode](#uwu-mode)
-    - [Rules mode](#rules-mode)
-    - [The ladel bot](#the-ladel-bot)
   - [Bugs / Issues](#bugs--issues)
   - [Contributing](#contributing)
-  - [Distributing](#distributing) -->
+  - [Distributing](#distributing)
 
 
 ## Install
@@ -41,7 +24,7 @@ For mac users, the [Linux](#linux) install should work, however, I have no means
 
 For android users, check [Here](https://github.com/Key-Intercept/Key-Intercept-Mobile).
 
-There are some known issues with installation, if you have any issues, [check here]()
+There are some known issues with installation, if you have any issues, [check here](https://github.com/Key-Intercept/key-intercept/wiki/Known-Issues)
 
 ### Windows
 To install on Windows:
