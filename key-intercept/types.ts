@@ -35,5 +35,5 @@ export type WhitelistItem = {
     id: bigint,
     config_id: bigint,
     server_name: string,
-    discord_id: bigint,
+    discord_id: string,
 }

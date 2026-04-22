@@ -122,7 +122,12 @@ export async function getRules() {
 
 export async function getWhitelist() {
     const whitelistData = await supabase.from("Server_Whitelist_Items").select().eq("config_id", config.id);
-    whitelist = whitelistData.data!
+    whitelist = whitelistData.data!.map((item) => ({
+        id: item.id,
+        config_id: item.config_id,
+        server_name: item.server_name,
+        discord_id: item.discord_id,
+    }));
     console.log("Whitelist:");
     console.log(whitelist);
 }
@@ -466,7 +471,7 @@ export default definePlugin({
         if (config?.debug) console.log("Channel object:", channel);
 
         let nameToCheck: string | null = null;
-        let idToCheck: BigInt | null = null;
+        let idToCheck: string | null = null;
 
         if (channel.guild_id) {
             // It's a server channel
@@ -495,14 +500,16 @@ export default definePlugin({
         if (config?.debug) console.log(`ID to check against whitelist: "${idToCheck}"`);
 
         if (whitelist.length > 0) {
+            const nameMatches = !!nameToCheck && whitelist.some(item => item.server_name === nameToCheck);
+            const idMatches = !!idToCheck && whitelist.some(item => item.discord_id === idToCheck);
 
-            // If a name exists, check against the whitelist.
-            if (nameToCheck && !whitelist.some(item => item.server_name === nameToCheck)) {
-                if (config?.debug) console.log(`"${nameToCheck}" is not in the whitelist, skipping modifications.`);
-                return;
-            }
-            if (idToCheck && !whitelist.some(item => item.discord_id === idToCheck)) {
-                if (config?.debug) console.log(`ID "${idToCheck}" is not in the whitelist, skipping modifications.`);
+            // If we have at least one identifier, allow when either matches.
+            if ((nameToCheck || idToCheck) && !nameMatches && !idMatches) {
+                if (config?.debug) {
+                    console.log(
+                        `No whitelist match for name "${nameToCheck}" or ID "${idToCheck}", skipping modifications.`
+                    );
+                }
                 return;
             }
         }
