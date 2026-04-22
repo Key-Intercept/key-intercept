@@ -9,13 +9,13 @@ import definePlugin from "@utils/types";
 
 export const version_number = "4.0";
 
-import { Config, Rule } from "./types";
+import { Config, Rule, WhitelistItem } from "./types";
 
 const supabase = createClient("https://qjzgfwithyvmwctesnqs.supabase.co", "sb_publishable_cxq8QZp9BDtjE4G5qiPCFA_lUZ4Cbdh");
 
 let config: Config;
 let rules: Rule[] = [];
-let whitelist: string[] = [];
+let whitelist: WhitelistItem[] = [];
 let petWords: string[] = [];
 
 export async function createNewUser(userID: string, username: string): Promise<void> {
@@ -123,7 +123,7 @@ export async function getRules() {
 export async function getWhitelist() {
     const whitelistData = await supabase.from("Server_Whitelist_Items").select().eq("config_id", config.id);
     whitelist = whitelistData.data!.map((v, i, a) => {
-        return a[i].server_name;
+        return [a[i].server_name, a[i].discord_id];
     });
     console.log("Whitelist:");
     console.log(whitelist);
@@ -179,6 +179,7 @@ export function applyRules(msg: string, rules: Rule[], rules_end: Date, verbose:
         return msg;
     }
     let output = msg.normalize("NFKC");
+    rules.sort((a, b) => a.order - b.order);
     for (const rule of rules) {
         if (!rule.enabled) {
             if (verbose) { console.log("Rule disabled, skipping"); }
