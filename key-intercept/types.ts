@@ -1,9 +1,3 @@
-/*
- * Vencord, a Discord client mod
- * Copyright (c) 2025 Vendicated and contributors
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
-
 export type Config = {
     id: bigint,
     created_at: Date,
@@ -34,4 +28,13 @@ export type Rule = {
     regex_normalize: boolean,
     enabled: boolean,
     chance_to_apply: number,
+    label: string,
+    order: number,
 };
+
+export type WhitelistItem = {
+    id: bigint,
+    config_id: bigint,
+    server_name: string,
+    discord_id: string,
+}

@@ -82,5 +82,5 @@ test("applyUWU_PRESERVES_SPACING", () => {
 });
 
 test("applyUWU_MULTIPLE_SPACES", () => {
-    expect(applyUWU("hello world test", new Date(9999, 1), false)).toContain("hello ");
+    expect(applyUWU("hello world test", new Date(9999, 1), false)).toContain("hewwo ");
 });

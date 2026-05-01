@@ -9,14 +9,14 @@ import definePlugin from "@utils/types";
 
 export const version_number = "4.0";
 
-import { Config, Rule } from "./types";
 import { NormalizedString } from "./normalizedString";
+import { Config, Rule, WhitelistItem } from "./types";
 
 const supabase = createClient("https://qjzgfwithyvmwctesnqs.supabase.co", "sb_publishable_cxq8QZp9BDtjE4G5qiPCFA_lUZ4Cbdh");
 
 let config: Config;
 let rules: Rule[] = [];
-let whitelist: string[] = [];
+let whitelist: WhitelistItem[] = [];
 let petWords: string[] = [];
 
 export async function createNewUser(userID: string, username: string): Promise<void> {
@@ -57,7 +57,7 @@ export async function getData() {
         event: "*",
         schema: "public",
         table: "Config"
-    }, async payload => {
+    }, async () => {
         await getConfig();
     }).subscribe();
 
@@ -65,7 +65,7 @@ export async function getData() {
         event: "*",
         schema: "public",
         table: "Rules"
-    }, async payload => {
+    }, async () => {
         await getRules();
     }).subscribe();
 
@@ -73,7 +73,7 @@ export async function getData() {
         event: "*",
         schema: "public",
         table: "Server_Whitelist_Items"
-    }, async payload => {
+    }, async () => {
         await getWhitelist();
     }).subscribe();
 
@@ -81,7 +81,7 @@ export async function getData() {
         event: "*",
         schema: "public",
         table: "Config"
-    }, async payload => {
+    }, async () => {
         await getConfig();
         await getPetWords();
     }).subscribe();
@@ -123,9 +123,12 @@ export async function getRules() {
 
 export async function getWhitelist() {
     const whitelistData = await supabase.from("Server_Whitelist_Items").select().eq("config_id", config.id);
-    whitelist = whitelistData.data!.map((v, i, a) => {
-        return a[i].server_name;
-    });
+    whitelist = whitelistData.data!.map((item) => ({
+        id: item.id,
+        config_id: item.config_id,
+        server_name: item.server_name,
+        discord_id: item.discord_id,
+    }));
     console.log("Whitelist:");
     console.log(whitelist);
 }
@@ -179,7 +182,8 @@ export function applyRules(msg: string, rules: Rule[], rules_end: Date, verbose:
     if (!shouldApplyRules(rules_end, verbose)) {
         return msg;
     }
-    let output = msg;
+    let output = msg.normalize("NFKC");
+    rules.sort((a, b) => a.order - b.order);
     for (const rule of rules) {
         if (!rule.enabled) {
             if (verbose) { console.log("Rule disabled, skipping"); }
@@ -288,10 +292,10 @@ export function applyBimbo(msg: string, bimbo_end: Date, bimbo_word_length: numb
         return msg;
     }
     let output = "";
-    const pronouns = ["i", "is", "you", "he", "she", "it", "we", "they"];
+    const pronouns = ["i", "you", "he", "she", "it", "we", "they", "is"];
     const maxWordLength = bimbo_word_length;
     const likeChance = 0.1;
-    const gargle_words = ["like", "hehe", "uhh", "totally", "so dumbb"];
+    const gargle_words = ["like", "hehe", "uhh", "totally", "so dumbb", "ummm", "hhhhh"];
     for (const word of msg.split(" ")) {
         let changed = false;
         if (!word_is_link(word, verbose)) {
@@ -423,9 +427,10 @@ export function applyUWU(msg: string, uwu_end: Date, verbose: boolean = true) {
             continue;
         }
         word = word.replace(new RegExp("th", "gi"), "d");
-        word = word.replace(new RegExp("r", "gi"), "w");
+        word = word.replace(new RegExp("r|l", "gi"), "w");
         word = word.replace(new RegExp("u", "gi"), "uw");
-
+        word = word.replace(new RegExp("n([aeiou])", "gi"), "ny$1")
+        word = word.replace(new RegExp("ove", "gi"), "uv")
         output += word + " "
     }
 
@@ -461,7 +466,7 @@ export default definePlugin({
     name: "key-intercept",
     description: "You don't need to control what you say, let someone else control it.",
     authors: [{ name: "Tom", id: 277137325342064640n }],
-
+    dependencies: ["MessageEventsAPI"],
     _handler: null as ((event: any) => void) | null,
 
     async start() {
@@ -477,12 +482,14 @@ export default definePlugin({
         if (config?.debug) console.log("Channel object:", channel);
 
         let nameToCheck: string | null = null;
+        let idToCheck: string | null = null;
 
         if (channel.guild_id) {
             // It's a server channel
             const guild = GuildStore?.getGuild(channel.guild_id);
             if (config?.debug) console.log("Guild object:", guild);
             nameToCheck = guild?.name ?? null;
+            idToCheck = guild?.id ?? null;
         } else {
             // It's a DM or Group DM
             if (channel.name) {
@@ -496,16 +503,24 @@ export default definePlugin({
                     .map((id: string) => UserStore.getUser(id)?.username)
                     .filter(Boolean);
                 nameToCheck = recipientNames.join(", ");
+                idToCheck = channel.id ?? null;
             }
         }
 
         if (config?.debug) console.log(`Name to check against whitelist: "${nameToCheck}"`);
+        if (config?.debug) console.log(`ID to check against whitelist: "${idToCheck}"`);
 
         if (whitelist.length > 0) {
+            const nameMatches = !!nameToCheck && whitelist.some(item => item.server_name === nameToCheck);
+            const idMatches = !!idToCheck && whitelist.some(item => item.discord_id === idToCheck);
 
-            // If a name exists, check against the whitelist.
-            if (nameToCheck && !whitelist.includes(nameToCheck)) {
-                if (config?.debug) console.log(`"${nameToCheck}" is not in the whitelist, skipping modifications.`);
+            // If we have at least one identifier, allow when either matches.
+            if ((nameToCheck || idToCheck) && !nameMatches && !idMatches) {
+                if (config?.debug) {
+                    console.log(
+                        `No whitelist match for name "${nameToCheck}" or ID "${idToCheck}", skipping modifications.`
+                    );
+                }
                 return;
             }
         }
