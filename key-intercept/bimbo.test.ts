@@ -76,3 +76,11 @@ test("applyBimbo_MAXWORDLENGTH_AFTER", () => {
 test("applyBimbo_MAXWORDLENGTH", () => {
     expect(applyBimbo("testword", new Date(9999, 1), 4, false)).toBe("teuhhhh long words harddd hehe");
 });
+
+test("applyBimbo_MAXWORDLENGTH_EXCLUDEPUNCTUATIONATEND", () => {
+    expect(applyBimbo("test!", new Date(9999, 1), 4, false)).toBe("test!");
+});
+
+test("applyBimbo_MAXWORDLENGTH_MIDDLEPUNCTUATION", () => {
+    expect(applyBimbo("te!st", new Date(9999, 1), 4, false)).toBe("teuhhhh long words harddd hehe");
+});

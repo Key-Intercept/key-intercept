@@ -305,7 +305,7 @@ export function applyBimbo(msg: string, bimbo_end: Date, bimbo_word_length: numb
                 changed = true;
                 if (verbose) { console.log("pronoun found, added 'like totally'"); }
             }
-            if (word.length > maxWordLength) {
+            if (word.length > maxWordLength && word.replace(/\W+$/, "").length > maxWordLength) {
                 if (verbose) { console.log("word: " + word + " was too long"); }
                 output += word.substring(0, maxWordLength - 2);
                 output += "uhhhh long words harddd hehe";
