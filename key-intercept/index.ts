@@ -9,6 +9,7 @@ import definePlugin from "@utils/types";
 
 export const version_number = "4.0";
 
+import { NormalizedString } from "./normalizedString";
 import { Config, Rule, WhitelistItem } from "./types";
 
 const supabase = createClient("https://qjzgfwithyvmwctesnqs.supabase.co", "sb_publishable_cxq8QZp9BDtjE4G5qiPCFA_lUZ4Cbdh");
@@ -189,14 +190,24 @@ export function applyRules(msg: string, rules: Rule[], rules_end: Date, verbose:
             continue;
         }
         const temp = new RegExp(rule.rule_regex.toString().replaceAll("\\\\", "\\"));
-        output = output.replace(new RegExp(temp, "gi"), (match: string, ...args): string => {
+        const matchCallback = (match: string, ...args): string => {
             if (Math.random() > rule.chance_to_apply) {
                 if (verbose) { console.log(`Skipping match ${rule.chance_to_apply}`); }
                 return match;
             }
             if (verbose) { console.log(`Rule Applied ${match.replace(new RegExp(temp, "i"), rule.rule_replacement)}`); }
             return match.replace(new RegExp(temp, "i"), rule.rule_replacement);
-        });
+        };
+
+        if (rule.regex_normalize) {
+            if (verbose) { console.log("Using input normalization"); }
+            output = new NormalizedString(output, verbose).replace(new RegExp(temp, "gi"), matchCallback);
+        } else {
+            output = output.replace(new RegExp(temp, "gi"), matchCallback);
+        }
+
+
+        
         if (verbose) { console.log(`Applying rule: ${temp}`); }
     }
     if (verbose) { console.log("message after rules: " + output); }
