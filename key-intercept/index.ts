@@ -9,6 +9,7 @@ import definePlugin from "@utils/types";
 
 export const version_number = "4.2";
 
+import { editPreviousMessage, getPreviousMessage, getPreviousMessageSender } from "./getPreviousMessage";
 import { NormalizedString } from "./normalizedString";
 import { Config, Rule, WhitelistItem } from "./types";
 
@@ -369,7 +370,7 @@ export function applyHorny(msg: string, horny_end: Date, verbose: boolean = true
 	return output;
 }
 
-export function applyDrone(msg: string, drone_end: Date, header_text: string, footer_text: string, drone_health: number, verbose: boolean = true) {
+export function applyDrone(msg: string, drone_end: Date, header_text: string, footer_text: string, drone_health: number, channelID: string, verbose: boolean = true) {
 	if (!shouldApplyDrone(drone_end, verbose)) {
 		return msg;
 	}
@@ -436,8 +437,27 @@ export function applyDrone(msg: string, drone_end: Date, header_text: string, fo
 		output += outword + " ";
 	}
 
-	output = "`" + header_text + "`\n" + output.trimEnd() + "\n`" + footer_text + "`";
-	return output;
+	const previousMessage = getPreviousMessage(channelID);
+	const previousSender = getPreviousMessageSender(channelID);
+	const currentUserId = Vencord.Webpack.findByProps("getCurrentUser", "getUser").getCurrentUser().id;
+
+	if (verbose) { console.log("Previous message sent by: " + previousSender?.id) }
+	if (verbose) { console.log("Current user ID: " + currentUserId) }
+	if (verbose) { console.log("Previous message content: " + previousMessage?.content) }
+
+	const continuingOwnBlock = previousSender?.id === currentUserId;
+	if (continuingOwnBlock && previousMessage?.content.endsWith("\n`" + footer_text + "`")) {
+		editPreviousMessage(channelID, previousMessage.id, previousMessage.content.replace("\n`" + footer_text + "`", ""));
+	}
+
+	const formattedBody = output.trimEnd();
+	let formattedMessage = formattedBody + "\n`" + footer_text + "`";
+
+	if (!continuingOwnBlock) {
+		formattedMessage = "`" + header_text + "`\n" + formattedMessage;
+	}
+
+	return formattedMessage;
 }
 
 export function applyUWU(msg: string, uwu_end: Date, verbose: boolean = true) {
@@ -489,7 +509,7 @@ function word_is_link(word: string, verbose: boolean = true): boolean {
 	return (word.at(0) == "h" && word.at(1) == "t" && word.at(2) == "t" && word.at(3) == "p")
 }
 
-export function applyReplacements(msg: string) {
+export function applyReplacements(msg: string, channelId: string): string {
 	const originalMsg = msg;
 	console.log("Original message: " + originalMsg);
 	msg = applyRules(msg, rules, config.rules_end);
@@ -499,7 +519,7 @@ export function applyReplacements(msg: string) {
 	msg = applyBimbo(msg, config.bimbo_end, config.bimbo_word_length);
 	msg = applyCensored(msg, censoredWords, config.censored_replacement, config.censored_end);
 	msg = applyGag(msg, config.gag_end);
-	msg = applyDrone(msg, config.drone_end, config.drone_header_text, config.drone_footer_text, config.drone_health);
+	msg = applyDrone(msg, config.drone_end, config.drone_header_text, config.drone_footer_text, config.drone_health, channelId);
 	return msg + (config.debug && (shouldApplyRules(config.rules_end) || shouldApplyGag(config.gag_end) || shouldApplyPet(config.pet_end, config.pet_amount) || shouldApplyBimbo(config.bimbo_end) || shouldApplyHorny(config.horny_end) || shouldApplyDrone(config.drone_end)) ? `\n        (original message: ${originalMsg})` : "");
 }
 
@@ -574,7 +594,7 @@ export default definePlugin({
 		}
 
 		console.log("Event caught: onBeforeMessageSend");
-		const output = applyReplacements(msg.content);
+		const output = applyReplacements(msg.content, channelId);
 		msg.content = output;
 	},
 });
