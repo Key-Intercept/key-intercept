@@ -7,13 +7,21 @@ Basically, this is a lil program that sits in the back of your discord. When you
 
 > Note: Vencord is an unsupported use of Discord, to use it is a breach of TOS. Use it, and this plugin, at your own risk.
 Contents:
-
+  - [Funding](#funding)
   - [Install](#install)
   - [First time setup](#first-time-setup)
   - [Usage](#usage)
   - [Bugs / Issues](#bugs--issues)
   - [Contributing](#contributing)
   - [Distributing](#distributing)
+
+## Funding
+
+This project all together costs me £27 / month to maintain (database + server for the bot), it would be nice if you could help but you really don't have to
+
+> Be aware: supporting me in this way entitles you to nothing, I will continue to work on this when I can, and fix bugs and issues in the order I feel they need fixing
+
+<a href="https://www.buymeacoffee.com/gbraad" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
 
 ## Install
