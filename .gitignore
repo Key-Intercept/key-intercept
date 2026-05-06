@@ -1,0 +1,5 @@
+.key-intercept-dev/
+Vencord/
+*.bak
+*.log
+.DS_Store

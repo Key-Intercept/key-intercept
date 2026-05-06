@@ -11,9 +11,6 @@ export type Config = {
 	horny_end: Date,
 	bimbo_word_length: number,
 	drone_end: Date,
-	drone_header_text: string,
-	drone_footer_text: string,
-	drone_health: number,
 	uwu_end: Date,
 	censored_end: Date,
 	censored_replacement: string,
@@ -39,4 +36,17 @@ export type WhitelistItem = {
 	config_id: bigint,
 	server_name: string,
 	discord_id: string,
+}
+
+export type DroneConfig = {
+	config_id: bigint,
+	drone_health: number
+	speech_header: string,
+	speech_footer: string,
+	action_header: string,
+	action_footer: string,
+	whisper_header: string,
+	whisper_footer: string,
+	loud_header: string,
+	loud_footer: string,
 }
