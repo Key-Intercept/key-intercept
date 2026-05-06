@@ -173,8 +173,21 @@ export async function getCensoredWords() {
 }
 
 export async function getDroneConfig() {
-	const droneConfigData = (await supabase.from("Drone_Config").select().eq("config_id", config.id).single()).data!;
-	droneConfig = droneConfigData;
+	const droneConfigData = await supabase.from("Drone_Config").select().eq("config_id", config.id).single();
+	droneConfig = {
+		config_id: droneConfigData.data!.config_id as bigint,
+		drone_health: droneConfigData.data!.drone_health as number,
+		speech_header: droneConfigData.data!.speech_header as string,
+		speech_footer: droneConfigData.data!.speech_footer as string,
+		action_header: droneConfigData.data!.action_header as string,
+		action_footer: droneConfigData.data!.action_footer as string,
+		whisper_header: droneConfigData.data!.whisper_header as string,
+		whisper_footer: droneConfigData.data!.whisper_footer as string,
+		loud_header: droneConfigData.data!.loud_header as string,
+		loud_footer: droneConfigData.data!.loud_footer as string,
+	}
+	console.log("Drone Config:");
+	console.log(droneConfig);
 }
 
 export function shouldApplyRules(rules_end: Date, verbose: boolean = true): boolean {
@@ -474,6 +487,9 @@ export function applyDrone(msg: string, drone_end: Date, speech_header: string, 
 		footer = whisper_footer;
 	}
 
+	if (verbose) { console.log("header: " + header) }
+	if (verbose) { console.log("footer: " + footer) }
+
 	const continuingOwnBlock = previousSender?.id === currentUserId;
 	if (continuingOwnBlock && previousMessage?.content.endsWith("\n`" + footer + "`")) {
 		editPreviousMessage(channelID, previousMessage.id, previousMessage.content.replace("\n`" + footer + "`", ""));
@@ -482,7 +498,7 @@ export function applyDrone(msg: string, drone_end: Date, speech_header: string, 
 	const formattedBody = output.trimEnd();
 	let formattedMessage = formattedBody + "\n`" + footer + "`";
 
-	if (!continuingOwnBlock) {
+	if (!continuingOwnBlock || !previousMessage?.content.endsWith("\n`" + footer + "`")) {
 		formattedMessage = "`" + header + "`\n" + formattedMessage;
 	}
 
@@ -548,7 +564,7 @@ export function applyReplacements(msg: string, channelId: string): string {
 	msg = applyBimbo(msg, config.bimbo_end, config.bimbo_word_length);
 	msg = applyCensored(msg, censoredWords, config.censored_replacement, config.censored_end);
 	msg = applyGag(msg, config.gag_end);
-	msg = applyDrone(msg, config.drone_end, config.drone_header_text, config.drone_footer_text, config.drone_health, channelId);
+	msg = applyDrone(msg, config.drone_end, droneConfig.speech_header, droneConfig.speech_footer, droneConfig.action_header, droneConfig.action_footer, droneConfig.whisper_header, droneConfig.whisper_footer, droneConfig.loud_header, droneConfig.loud_footer, droneConfig.drone_health, channelId);
 	return msg + (config.debug && (shouldApplyRules(config.rules_end) || shouldApplyGag(config.gag_end) || shouldApplyPet(config.pet_end, config.pet_amount) || shouldApplyBimbo(config.bimbo_end) || shouldApplyHorny(config.horny_end) || shouldApplyDrone(config.drone_end)) ? `\n        (original message: ${originalMsg})` : "");
 }
 
