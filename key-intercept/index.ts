@@ -7,15 +7,16 @@
 import { createClient } from "@supabase/supabase-js";
 import definePlugin from "@utils/types";
 
-export const version_number = "4.2";
+export const version_number = "4.3.0";
 
 import { editPreviousMessage, getPreviousMessage, getPreviousMessageSender } from "./getPreviousMessage";
 import { NormalizedString } from "./normalizedString";
-import { Config, Rule, WhitelistItem } from "./types";
+import { Config, DroneConfig, Rule, WhitelistItem } from "./types";
 
 const supabase = createClient("https://qjzgfwithyvmwctesnqs.supabase.co", "sb_publishable_cxq8QZp9BDtjE4G5qiPCFA_lUZ4Cbdh");
 
 let config: Config;
+let droneConfig: DroneConfig;
 let rules: Rule[] = [];
 let whitelist: WhitelistItem[] = [];
 let petWords: string[] = [];
@@ -30,6 +31,7 @@ export async function createNewConfig(userID: string): Promise<void> {
 	console.log("creating new config...");
 	const configData = await supabase.from("Config").insert({}).select().single();
 	await supabase.from("Sub_Config_Access").insert({ "sub_id": userID, "config_id": configData.data!.id });
+	await supabase.from("Drone_Config").insert({ "config_id": configData.data!.id, "speech_header": "This Drone Says:", "speech_footer": "It Obeys", "action_header": "Drone::Action::Performs(", "action_footer": ");", "whisper_header": "Drone Initiating Quiet Mode", "whisper_footer": "Normal Volume Restored", "loud_header": "Volume.set(500);", "loud_footer": "Volume.set(100)" });
 }
 
 export async function getData() {
@@ -95,11 +97,20 @@ export async function getData() {
 		await getCensoredWords();
 	}).subscribe();
 
+	supabase.channel("public:drone_config").on("postgres_changes", {
+		event: "*",
+		schema: "public",
+		table: "Drone_Config"
+	}, async () => {
+		await getDroneConfig();
+	}).subscribe();
+
 	await getConfig();
 	await getRules();
 	await getWhitelist();
 	await getPetWords();
 	await getCensoredWords();
+	await getDroneConfig();
 }
 
 export async function getConfig() {
@@ -115,9 +126,6 @@ export async function getConfig() {
 	config.pet_type = configData.data!.pet_type;
 	config.drone_end = new Date(configData.data!.drone_end);
 	config.debug = configData.data!.debug;
-	config.drone_header_text = configData.data!.drone_header_text;
-	config.drone_footer_text = configData.data!.drone_footer_text;
-	config.drone_health = configData.data!.drone_health;
 	config.uwu_end = new Date(configData.data!.uwu_end);
 	config.censored_end = new Date(configData.data!.censored_end);
 	config.censored_replacement = configData.data!.censored_replacement;
@@ -162,6 +170,11 @@ export async function getCensoredWords() {
 	}
 	console.log("Censored Words:");
 	console.log(censoredWords);
+}
+
+export async function getDroneConfig() {
+	const droneConfigData = (await supabase.from("Drone_Config").select().eq("config_id", config.id).single()).data!;
+	droneConfig = droneConfigData;
 }
 
 export function shouldApplyRules(rules_end: Date, verbose: boolean = true): boolean {
@@ -370,7 +383,7 @@ export function applyHorny(msg: string, horny_end: Date, verbose: boolean = true
 	return output;
 }
 
-export function applyDrone(msg: string, drone_end: Date, header_text: string, footer_text: string, drone_health: number, channelID: string, verbose: boolean = true) {
+export function applyDrone(msg: string, drone_end: Date, speech_header: string, speech_footer: string, action_header: string, action_footer: string, whisper_header: string, whisper_footer: string, loud_header: string, loud_footer: string, drone_health: number, channelID: string, verbose: boolean = true) {
 	if (!shouldApplyDrone(drone_end, verbose)) {
 		return msg;
 	}
@@ -445,16 +458,32 @@ export function applyDrone(msg: string, drone_end: Date, header_text: string, fo
 	if (verbose) { console.log("Current user ID: " + currentUserId) }
 	if (verbose) { console.log("Previous message content: " + previousMessage?.content) }
 
+	let header = speech_header;
+	let footer = speech_footer;
+
+	if (msg.startsWith("**")) {
+		header = loud_header;
+		footer = loud_footer;
+	}
+	else if (msg.startsWith("*")) {
+		header = action_header;
+		footer = action_footer;
+	}
+	else if (msg.startsWith("-#")) {
+		header = whisper_header;
+		footer = whisper_footer;
+	}
+
 	const continuingOwnBlock = previousSender?.id === currentUserId;
-	if (continuingOwnBlock && previousMessage?.content.endsWith("\n`" + footer_text + "`")) {
-		editPreviousMessage(channelID, previousMessage.id, previousMessage.content.replace("\n`" + footer_text + "`", ""));
+	if (continuingOwnBlock && previousMessage?.content.endsWith("\n`" + footer + "`")) {
+		editPreviousMessage(channelID, previousMessage.id, previousMessage.content.replace("\n`" + footer + "`", ""));
 	}
 
 	const formattedBody = output.trimEnd();
-	let formattedMessage = formattedBody + "\n`" + footer_text + "`";
+	let formattedMessage = formattedBody + "\n`" + footer + "`";
 
 	if (!continuingOwnBlock) {
-		formattedMessage = "`" + header_text + "`\n" + formattedMessage;
+		formattedMessage = "`" + header + "`\n" + formattedMessage;
 	}
 
 	return formattedMessage;
