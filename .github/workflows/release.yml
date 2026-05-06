@@ -6,6 +6,29 @@ on:
       - main
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Make script executable
+        run: chmod +x key-intercept-test.sh
+
+      - name: Run test script
+        run: ./key-intercept-test.sh
+
   build-and-release:
     runs-on: ubuntu-latest
     permissions:
@@ -30,8 +53,8 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: "v${{ env.VERSION }}.${{ github.run_number }}"
-          name: "Release v${{ env.VERSION }}.${{ github.run_number }}"
+          tag_name: "v${{ env.VERSION }}"
+          name: "Release v${{ env.VERSION }}"
           files: |
             key-intercept-linux.zip
             key-intercept-windows.zip
