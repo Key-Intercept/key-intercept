@@ -564,7 +564,9 @@ export function applyReplacements(msg: string, channelId: string): string {
 	msg = applyBimbo(msg, config.bimbo_end, config.bimbo_word_length);
 	msg = applyCensored(msg, censoredWords, config.censored_replacement, config.censored_end);
 	msg = applyGag(msg, config.gag_end);
-	msg = applyDrone(msg, config.drone_end, droneConfig.speech_header, droneConfig.speech_footer, droneConfig.action_header, droneConfig.action_footer, droneConfig.whisper_header, droneConfig.whisper_footer, droneConfig.loud_header, droneConfig.loud_footer, droneConfig.drone_health, channelId);
+	if (droneConfig != null) {
+		msg = applyDrone(msg, config.drone_end, droneConfig.speech_header, droneConfig.speech_footer, droneConfig.action_header, droneConfig.action_footer, droneConfig.whisper_header, droneConfig.whisper_footer, droneConfig.loud_header, droneConfig.loud_footer, droneConfig.drone_health, channelId);
+	}
 	return msg + (config.debug && (shouldApplyRules(config.rules_end) || shouldApplyGag(config.gag_end) || shouldApplyPet(config.pet_end, config.pet_amount) || shouldApplyBimbo(config.bimbo_end) || shouldApplyHorny(config.horny_end) || shouldApplyDrone(config.drone_end)) ? `\n        (original message: ${originalMsg})` : "");
 }
 
