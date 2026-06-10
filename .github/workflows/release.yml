@@ -40,9 +40,28 @@ jobs:
 
       - name: Get Version
         id: get_version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          VERSION=$(grep "export const version_number" key-intercept/index.ts | cut -d'"' -f2)
+          # Query GitHub Releases API for the latest release tag
+          latest_tag=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/latest" \
+            | python -c "import sys,json; j=json.load(sys.stdin); print(j.get('tag_name') or '')")
+          if [ -z "$latest_tag" ]; then
+            echo "No previous release found, defaulting to v0.0.0"
+            latest_tag="v0.0.0"
+          fi
+          # Remove leading 'v' if present and split semver
+          version="${latest_tag#v}"
+          IFS='.' read -r major minor patch <<< "$version"
+          major=${major:-0}; minor=${minor:-0}; patch=${patch:-0}
+          # Extract numeric prefix from patch and increment patch
+          patch_num=$(echo "$patch" | sed 's/[^0-9].*//')
+          patch_num=${patch_num:-0}
+          new_patch=$((patch_num + 1))
+          VERSION="${major}.${minor}.${new_patch}"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Create Linux Zip
         run: zip -r key-intercept-linux.zip key-intercept key-intercept-install.sh
