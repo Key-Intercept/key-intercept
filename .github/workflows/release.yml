@@ -30,6 +30,7 @@ jobs:
         run: ./key-intercept-test.sh
 
   build-and-release:
+    needs: test
     runs-on: ubuntu-latest
     permissions:
       contents: write
