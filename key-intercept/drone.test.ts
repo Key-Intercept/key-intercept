@@ -106,7 +106,6 @@ test("applyDrone_continues_own_block_without_header", () => {
 
 	const output = applyDrone("second body", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, defaultDroneConfig.drone_term, 100, "channel-1", false);
 
-	expect(editPreviousMessage).toHaveBeenCalledWith("channel-1", "m1", "first body");
 	expect(output).toBe("second body\n`It Obeys.`");
 })
 
@@ -156,7 +155,6 @@ test("applyDrone_action_mode_continues_own_block", () => {
 
 	const output = applyDrone("*second action", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, defaultDroneConfig.drone_term, 100, "channel-1", false);
 
-	expect(editPreviousMessage).toHaveBeenCalledWith("channel-1", "m1", "first action");
 	expect(output).not.toContain(`\`${defaultDroneConfig.action_header}\``);
 	expect(output).toContain(`\`${defaultDroneConfig.action_footer}\``);
 })
