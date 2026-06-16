@@ -63,39 +63,39 @@ test("shouldApplyDrone_TRUE_NOW", () => {
 })
 
 test("applyDrone_BLANK", () => {
-	expect(applyDrone("", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, 100, "channel-1", false)).toBe("`This Drone Says:`\n\n`It Obeys.`");
+	expect(applyDrone("", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, defaultDroneConfig.drone_term, 100, "channel-1", false)).toBe("`This Drone Says:`\n\n`It Obeys.`");
 })
 
 test("applyDrone_SPACE", () => {
-	expect(applyDrone(" ", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, 100, "channel-1", false)).toContain("It Obeys.");
+	expect(applyDrone(" ", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, defaultDroneConfig.drone_term, 100, "channel-1", false)).toContain("It Obeys.");
 })
 
 test("applyDrone_REGEX_2", () => {
-	expect(applyDrone("i cutie", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, 100, "channel-1", false)).toContain("This Drone cutie");
+	expect(applyDrone("i cutie", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, defaultDroneConfig.drone_term, 100, "channel-1", false)).toContain("This Drone cutie");
 })
 
 test("applyDrone_REGEX_3", () => {
-	expect(applyDrone("me cutie", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, 100, "channel-1", false)).toContain("This Drone cutie");
+	expect(applyDrone("me cutie", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, defaultDroneConfig.drone_term, 100, "channel-1", false)).toContain("This Drone cutie");
 })
 
 test("applyDrone_REGEX_4", () => {
-	expect(applyDrone("my cutie", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, 100, "channel-1", false)).toContain("Its' cutie");
+	expect(applyDrone("my cutie", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, defaultDroneConfig.drone_term, 100, "channel-1", false)).toContain("Its' cutie");
 })
 
 test("applyDrone_REGEX_5", () => {
-	expect(applyDrone("i am cutie", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, 100, "channel-1", false)).toContain("It is cutie");
+	expect(applyDrone("i am cutie", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, defaultDroneConfig.drone_term, 100, "channel-1", false)).toContain("It is cutie");
 })
 
 test("applyDrone_REGEX_6", () => {
-	expect(applyDrone("i'm cutie", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, 100, "channel-1", false)).toContain("It is cutie");
+	expect(applyDrone("i'm cutie", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, defaultDroneConfig.drone_term, 100, "channel-1", false)).toContain("It is cutie");
 })
 
 test("applyDrone_REGEX_7", () => {
-	expect(applyDrone("im cutie", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, 100, "channel-1", false)).toContain("It is cutie");
+	expect(applyDrone("im cutie", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, defaultDroneConfig.drone_term, 100, "channel-1", false)).toContain("It is cutie");
 })
 
 test("applyDrone_does_not_duplicate_body", () => {
-	const output = applyDrone("hello world", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, 100, "channel-1", false);
+	const output = applyDrone("hello world", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, defaultDroneConfig.drone_term, 100, "channel-1", false);
 
 	expect(output.match(/hello world/g)?.length ?? 0).toBe(1);
 })
@@ -104,7 +104,7 @@ test("applyDrone_continues_own_block_without_header", () => {
 	previousSender = { id: "user-1" };
 	previousMessage = { id: "m1", content: "first body\n`It Obeys.`" };
 
-	const output = applyDrone("second body", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, 100, "channel-1", false);
+	const output = applyDrone("second body", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, defaultDroneConfig.drone_term, 100, "channel-1", false);
 
 	expect(editPreviousMessage).toHaveBeenCalledWith("channel-1", "m1", "first body");
 	expect(output).toBe("second body\n`It Obeys.`");
@@ -114,7 +114,7 @@ test("applyDrone_starts_new_block_with_header", () => {
 	previousSender = { id: "user-2" };
 	previousMessage = { id: "m1", content: "someone else\n`It Obeys.`" };
 
-	const output = applyDrone("hello body", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, 100, "channel-1", false);
+	const output = applyDrone("hello body", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, defaultDroneConfig.drone_term, 100, "channel-1", false);
 
 	expect(editPreviousMessage).not.toHaveBeenCalled();
 	expect(output).toBe("`This Drone Says:`\nhello body\n`It Obeys.`");
@@ -124,7 +124,7 @@ test("applyDrone_action_mode_new_block", () => {
 	previousSender = { id: "user-2" };
 	previousMessage = null;
 
-	const output = applyDrone("*performs action", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, 100, "channel-1", false);
+	const output = applyDrone("*performs action", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, defaultDroneConfig.drone_term, 100, "channel-1", false);
 
 	expect(output).toContain(`\`${defaultDroneConfig.action_header}\``);
 	expect(output).toContain(`\`${defaultDroneConfig.action_footer}\``);
@@ -134,7 +134,7 @@ test("applyDrone_loud_mode_new_block", () => {
 	previousSender = { id: "user-2" };
 	previousMessage = null;
 
-	const output = applyDrone("**LOUD MESSAGE", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, 100, "channel-1", false);
+	const output = applyDrone("**LOUD MESSAGE", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, defaultDroneConfig.drone_term, 100, "channel-1", false);
 
 	expect(output).toContain(`\`${defaultDroneConfig.loud_header}\``);
 	expect(output).toContain(`\`${defaultDroneConfig.loud_footer}\``);
@@ -144,7 +144,7 @@ test("applyDrone_whisper_mode_new_block", () => {
 	previousSender = { id: "user-2" };
 	previousMessage = null;
 
-	const output = applyDrone("-#whisper quietly", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, 100, "channel-1", false);
+	const output = applyDrone("-#whisper quietly", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, defaultDroneConfig.drone_term, 100, "channel-1", false);
 
 	expect(output).toContain(`\`${defaultDroneConfig.whisper_header}\``);
 	expect(output).toContain(`\`${defaultDroneConfig.whisper_footer}\``);
@@ -154,7 +154,7 @@ test("applyDrone_action_mode_continues_own_block", () => {
 	previousSender = { id: "user-1" };
 	previousMessage = { id: "m1", content: "first action\n`);`" };
 
-	const output = applyDrone("*second action", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, 100, "channel-1", false);
+	const output = applyDrone("*second action", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, defaultDroneConfig.drone_term, 100, "channel-1", false);
 
 	expect(editPreviousMessage).toHaveBeenCalledWith("channel-1", "m1", "first action");
 	expect(output).not.toContain(`\`${defaultDroneConfig.action_header}\``);
@@ -162,13 +162,13 @@ test("applyDrone_action_mode_continues_own_block", () => {
 })
 
 test("applyDrone_link_no_regex", () => {
-	const output = applyDrone("check this https://example.com", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, 100, "channel-1", false);
+	const output = applyDrone("check this https://example.com", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, defaultDroneConfig.drone_term, 100, "channel-1", false);
 
 	expect(output).toContain("https://example.com");
 })
 
 test("applyDrone_low_health", () => {
-	const output = applyDrone("hello world", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, 5, "channel-1", false);
+	const output = applyDrone("hello world", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, defaultDroneConfig.drone_term, 5, "channel-1", false);
 
 	expect(output).toContain("haaaaas receieved bzzzzt");
 	expect(output).toContain("0x7547372482");

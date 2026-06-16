@@ -449,14 +449,14 @@ export function applyCensored(msg: string, censoredWords: string[], replacement:
 	return msg;
 }
 
-export function applyDrone(msg: string, drone_end: Date, speech_header: string, speech_footer: string, action_header: string, action_footer: string, whisper_header: string, whisper_footer: string, loud_header: string, loud_footer: string, drone_health: number, channelId: string, context: DroneContext = {}, verbose: boolean = true): DroneRenderResult {
+export function applyDrone(msg: string, drone_end: Date, speech_header: string, speech_footer: string, action_header: string, action_footer: string, whisper_header: string, whisper_footer: string, loud_header: string, loud_footer: string, drone_term: string, drone_health: number, channelId: string, context: DroneContext = {}, verbose: boolean = true): DroneRenderResult {
 	if (!shouldApplyDrone(drone_end, verbose)) {
 		return { message: msg };
 	}
 
 	if (drone_health < 10) {
 		return {
-			message: "`" + droneConfig.drone_term + " haaaaas receieved bzzzzt, ppplease provide repaiirs using beep '/repair', tthank youu. Returned Error: 0x7547372482`",
+			message: "`" + drone_term + " haaaaas receieved bzzzzt, ppplease provide repaiirs using beep '/repair', tthank youu. Returned Error: 0x7547372482`",
 		};
 	}
 
@@ -469,11 +469,11 @@ export function applyDrone(msg: string, drone_end: Date, speech_header: string, 
 
 	let output = "";
 	if (!containsLink) {
-		msg = msg.replace(new RegExp("\\bMe\\b", "gi"), droneConfig.drone_term);
+		msg = msg.replace(new RegExp("\\bMe\\b", "gi"), drone_term);
 		msg = msg.replace(new RegExp("\\bMy\\b", "gi"), "Its'");
 		msg = msg.replace(new RegExp("\\bI am\\b", "gi"), "It is");
 		msg = msg.replace(new RegExp("\\bI(')?m\\b", "gi"), "It is");
-		msg = msg.replace(new RegExp("\\bI\\b", "gi"), droneConfig.drone_term);
+		msg = msg.replace(new RegExp("\\bI\\b", "gi"), drone_term);
 		if (verbose) { console.log("Drone Regex Applied"); }
 	}
 
