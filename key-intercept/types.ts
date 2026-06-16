@@ -49,4 +49,5 @@ export type DroneConfig = {
 	whisper_footer: string,
 	loud_header: string,
 	loud_footer: string,
+	drone_term: string,
 }
