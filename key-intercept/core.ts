@@ -199,6 +199,7 @@ export async function getDroneConfig() {
 		whisper_footer: droneConfigData.data!.whisper_footer as string,
 		loud_header: droneConfigData.data!.loud_header as string,
 		loud_footer: droneConfigData.data!.loud_footer as string,
+		drone_term: droneConfigData.data!.drone_term as string,
 	}
 	console.log("Drone Config:");
 	console.log(droneConfig);
@@ -455,7 +456,7 @@ export function applyDrone(msg: string, drone_end: Date, speech_header: string, 
 
 	if (drone_health < 10) {
 		return {
-			message: "`This Drone haaaaas receieved bzzzzt, ppplease provide repaiirs using beep '/repair', tthank youu. Returned Error: 0x7547372482`",
+			message: "`" + droneConfig.drone_term + " haaaaas receieved bzzzzt, ppplease provide repaiirs using beep '/repair', tthank youu. Returned Error: 0x7547372482`",
 		};
 	}
 
@@ -468,11 +469,11 @@ export function applyDrone(msg: string, drone_end: Date, speech_header: string, 
 
 	let output = "";
 	if (!containsLink) {
-		msg = msg.replace(new RegExp("\\bMe\\b", "gi"), "This Drone");
+		msg = msg.replace(new RegExp("\\bMe\\b", "gi"), droneConfig.drone_term);
 		msg = msg.replace(new RegExp("\\bMy\\b", "gi"), "Its'");
 		msg = msg.replace(new RegExp("\\bI am\\b", "gi"), "It is");
 		msg = msg.replace(new RegExp("\\bI(')?m\\b", "gi"), "It is");
-		msg = msg.replace(new RegExp("\\bI\\b", "gi"), "This Drone");
+		msg = msg.replace(new RegExp("\\bI\\b", "gi"), droneConfig.drone_term);
 		if (verbose) { console.log("Drone Regex Applied"); }
 	}
 
