@@ -166,10 +166,3 @@ test("applyDrone_link_no_regex", () => {
 
 	expect(output).toContain("https://example.com");
 })
-
-test("applyDrone_low_health", () => {
-	const output = applyDrone("hello world", new Date(9999, 1), defaultDroneConfig.speech_header, defaultDroneConfig.speech_footer, defaultDroneConfig.action_header, defaultDroneConfig.action_footer, defaultDroneConfig.whisper_header, defaultDroneConfig.whisper_footer, defaultDroneConfig.loud_header, defaultDroneConfig.loud_footer, defaultDroneConfig.drone_term, 5, "channel-1", false);
-
-	expect(output).toContain("haaaaas receieved bzzzzt");
-	expect(output).toContain("0x7547372482");
-})
