@@ -33,6 +33,7 @@ const defaultDroneConfig = {
 	whisper_footer: "Normal Volume Restored",
 	loud_header: "Volume.set(500);",
 	loud_footer: "Volume.set(100)",
+	drone_term: "This Drone",
 };
 
 beforeEach(() => {
