@@ -19,7 +19,7 @@ import {
 	whitelist,
 } from "./core";
 
-export function applyDrone(msg: string, drone_end: Date, speech_header: string, speech_footer: string, action_header: string, action_footer: string, whisper_header: string, whisper_footer: string, loud_header: string, loud_footer: string, drone_health: number, channelID: string, verbose: boolean = true) {
+export function applyDrone(msg: string, drone_end: Date, speech_header: string, speech_footer: string, action_header: string, action_footer: string, whisper_header: string, whisper_footer: string, loud_header: string, loud_footer: string, drone_term: string, drone_health: number, channelID: string, verbose: boolean = true) {
 	const currentUser = Vencord.Webpack.findByProps("getCurrentUser", "getUser").getCurrentUser();
 	const previousMessage = getPreviousMessage(channelID);
 	const previousSender = getPreviousMessageSender(channelID);
