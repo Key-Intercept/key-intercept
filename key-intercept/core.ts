@@ -581,7 +581,7 @@ export function applyReplacements(msg: string, channelId: string, context: Drone
 	msg = applyGag(msg, config.gag_end);
 	let editPreviousMessage: DroneEditRequest | undefined;
 	if (droneConfig != null) {
-		const droneResult = applyDrone(msg, config.drone_end, droneConfig.speech_header, droneConfig.speech_footer, droneConfig.action_header, droneConfig.action_footer, droneConfig.whisper_header, droneConfig.whisper_footer, droneConfig.loud_header, droneConfig.loud_footer, droneConfig.drone_health, channelId, context);
+		const droneResult = applyDrone(msg, config.drone_end, droneConfig.speech_header, droneConfig.speech_footer, droneConfig.action_header, droneConfig.action_footer, droneConfig.whisper_header, droneConfig.whisper_footer, droneConfig.loud_header, droneConfig.loud_footer, droneConfig.drone_term, droneConfig.drone_health, channelId, context);
 		msg = droneResult.message;
 		editPreviousMessage = droneResult.editPreviousMessage;
 	}
