@@ -363,6 +363,7 @@ export function applyBimbo(msg: string, bimbo_end: Date, bimbo_word_length: numb
 	const maxWordLength = bimbo_word_length;
 	const likeChance = 0.1;
 	const gargle_words = ["like", "hehe", "uhh", "totally", "so dumbb", "ummm", "hhhhh"];
+	const punctuation = [".", ",", "!", "<", ">", "[", "]", "{", "}", "/", "?", ";", ":", "'", "@", "#", "~", "-", "_", '"', ")", "(", "*", "&", "&", "^", "%", "$", "£", "+", "=", "`", "¬", "|", "\\"];
 	for (const word of msg.split(" ")) {
 		let changed = false;
 		if (!word_is_link(word, verbose)) {
@@ -372,7 +373,15 @@ export function applyBimbo(msg: string, bimbo_end: Date, bimbo_word_length: numb
 				changed = true;
 				if (verbose) { console.log("pronoun found, added 'like totally'"); }
 			}
-			if (word.length > maxWordLength) {
+			var punctuationCount = 0;
+			for (const char of word) {
+				for (const punc of punctuation) {
+					if (punc == char) {
+						punctuationCount++;
+					}
+				}
+			}
+			if (word.length - punctuationCount > maxWordLength) {
 				if (verbose) { console.log("word: " + word + " was too long"); }
 				output += word.substring(0, maxWordLength - 2);
 				output += "uhhhh long words harddd hehe";
