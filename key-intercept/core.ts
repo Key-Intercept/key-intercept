@@ -166,7 +166,13 @@ export async function getRules() {
 
 export async function getRulesGroups() {
 	const rulesGroupsData = await supabase.from("Rules_Groups").select().eq("config_id", config.id);
-	rulesGroups = rulesGroupsData.data!;
+	rulesGroups = rulesGroupsData.data!.map((item: any) => ({
+		id: item.id,
+		config_id: item.config_id,
+		disabled_at: new Date(item.disabled_at),
+		created_at: new Date(item.created_at),
+		name: item.name
+	}));
 	console.log("Rules Groups:");
 	console.log(rulesGroups);
 }
