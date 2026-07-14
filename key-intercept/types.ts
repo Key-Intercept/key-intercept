@@ -29,7 +29,16 @@ export type Rule = {
 	chance_to_apply: number,
 	label: string,
 	order: number,
+	group_id: bigint,
 };
+
+export type RuleGroup = {
+	id: bigint,
+	created_at: Date,
+	name: string,
+	config_id: bigint,
+	disabled_at: Date,
+}
 
 export type WhitelistItem = {
 	id: bigint,
