@@ -614,7 +614,7 @@ export function applyReplacements(msg: string, channelId: string, context: Drone
 		editPreviousMessage = droneResult.editPreviousMessage;
 	}
 	return {
-		message: msg + (config.debug && shouldApplyGag(config.gag_end) || shouldApplyPet(config.pet_end, config.pet_amount) || shouldApplyBimbo(config.bimbo_end) || shouldApplyHorny(config.horny_end) || shouldApplyDrone(config.drone_end)) ? `\n        (original message: ${originalMsg})` : "",
+		message: msg + ((config.debug && (shouldApplyRules(config.rules_end) || shouldApplyGag(config.gag_end) || shouldApplyPet(config.pet_end, config.pet_amount) || shouldApplyBimbo(config.bimbo_end) || shouldApplyHorny(config.horny_end) || shouldApplyDrone(config.drone_end))) ? `\n        (original message: ${originalMsg})` : ""),
 		editPreviousMessage,
 	};
 }
