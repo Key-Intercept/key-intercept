@@ -9,7 +9,7 @@ import { createClient } from "@supabase/supabase-js";
 import { NormalizedString } from "./normalizedString";
 import { Config, DroneConfig, Rule, RuleGroup, WhitelistItem } from "./types";
 
-export const version_number = "4.3.0";
+export const version_number = "4.4.0";
 
 const supabase = createClient("https://qjzgfwithyvmwctesnqs.supabase.co", "sb_publishable_cxq8QZp9BDtjE4G5qiPCFA_lUZ4Cbdh");
 
@@ -48,7 +48,7 @@ export type DroneRenderResult = {
 
 export async function createNewUser(userID: string, username: string): Promise<void> {
 	console.log("creating new user...");
-	await fetch("167.233.133.34:4222/" + userID + "/" + username);
+	await fetch("167.133.233.34:4222/" + userID + "/" + username);
 }
 
 export async function getData(userID: string, username: string) {
@@ -64,10 +64,6 @@ export async function getData(userID: string, username: string) {
 	console.log(subID);
 	let subData = await supabase.from("Sub_Config_Access").select().eq("sub_id", subID);
 	console.log(subData);
-	if (subData.data?.length === 0) {
-		await createNewConfig(subID!);
-		subData = await supabase.from("Sub_Config_Access").select().eq("sub_id", subID);
-	}
 	config = {} as Config;
 	config.id = subData.data![0].config_id;
 
@@ -604,7 +600,7 @@ export function applyDrone(msg: string, drone_end: Date, speech_header: string, 
 export function applyReplacements(msg: string, channelId: string, context: DroneContext = {}): DroneRenderResult {
 	const originalMsg = msg;
 	console.log("Original message: " + originalMsg);
-	msg = applyRules(msg, rules, config.rules_end);
+	msg = applyRules(msg, rules);
 	msg = applyUWU(msg, config.uwu_end);
 	msg = applyHorny(msg, config.horny_end);
 	msg = applyPet(msg, config.pet_end, config.pet_amount, petWords);
@@ -618,7 +614,7 @@ export function applyReplacements(msg: string, channelId: string, context: Drone
 		editPreviousMessage = droneResult.editPreviousMessage;
 	}
 	return {
-		message: msg + (config.debug && (shouldApplyRules(config.rules_end) || shouldApplyGag(config.gag_end) || shouldApplyPet(config.pet_end, config.pet_amount) || shouldApplyBimbo(config.bimbo_end) || shouldApplyHorny(config.horny_end) || shouldApplyDrone(config.drone_end)) ? `\n        (original message: ${originalMsg})` : ""),
+		message: msg + (config.debug && shouldApplyGag(config.gag_end) || shouldApplyPet(config.pet_end, config.pet_amount) || shouldApplyBimbo(config.bimbo_end) || shouldApplyHorny(config.horny_end) || shouldApplyDrone(config.drone_end)) ? `\n        (original message: ${originalMsg})` : "",
 		editPreviousMessage,
 	};
 }
