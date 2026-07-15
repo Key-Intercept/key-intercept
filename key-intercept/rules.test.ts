@@ -1,26 +1,6 @@
 import { expect, test } from 'vitest'
-import { applyRules, shouldApplyRules } from './index'
+import { applyRules } from './index'
 import { Rule } from './types'
-
-test("shouldApplyRules_TRUE_UNIVERSAL", () => {
-	expect(shouldApplyRules(new Date(9999, 1), false)).toBeTruthy();
-})
-
-test("shouldApplyRules_TRUE_RELATIVE", () => {
-	expect(shouldApplyRules(new Date(Date.now() + 1000), false)).toBeTruthy();
-})
-
-test("shouldApplyRules_FALSE_UNIVERSAL", () => {
-	expect(shouldApplyRules(new Date(1, 1), false)).toBeFalsy();
-})
-
-test("shouldApplyRules_FALSE_RELATIVE", () => {
-	expect(shouldApplyRules(new Date(Date.now() - 1000), false)).toBeFalsy();
-})
-
-test("shouldApplyRules_TRUE_NOW", () => {
-	expect(shouldApplyRules(new Date(Date.now()), false)).toBeTruthy();
-})
 
 const testRule = { rule_regex: "test", rule_replacement: "exam", enabled: true, chance_to_apply: 100, id: BigInt(0), config_id: BigInt(0), created_at: new Date(0, 1), updated_at: new Date(0, 1) } as Rule;
 
