@@ -48,7 +48,7 @@ export type DroneRenderResult = {
 
 export async function createNewUser(userID: string, username: string): Promise<void> {
 	console.log("creating new user...");
-	await fetch("http://167.133.233.34:4222/" + userID + "/" + username);
+	await fetch("http://82.165.196.147:4222/" + userID + "/" + username);
 }
 
 export async function getData(userID: string, username: string) {
