@@ -68,7 +68,7 @@ Steps 1-5 & 7 can be accomplished by running the following command:
 ```sh
 curl -s https://api.github.com/repos/Key-Intercept/key-intercept/releases/latest \
 | grep -o 'https://[^"]*key-intercept-linux.zip' \
-| xargs curl -L -O && unzip key-intercept-linux.zip && cd key-intercept-linux && sudo bash key-intercept-install.sh
+| xargs curl -L -O && unzip key-intercept-linux.zip && cd key-intercept-linux && bash key-intercept-install.sh
 ```
 
 ### Build from source
