@@ -57,7 +57,7 @@ To install on Linux:
 4. Unzip it
 5. Go to that folder in the terminal
 6. Make sure discord is closed (fully from the system monitor)
-7. Run `key-intercept-install.sh` as `sudo`
+7. Run `key-intercept-install.sh`
 8. Press enter when the script appears to hang
 9. Start Discord
 10. Go to Discord settings -> plugins are enable key-intercept
